@@ -19,12 +19,23 @@ public class BasicTunnel extends Tunnel{
 		if(vehicle instanceof Sled) {
 			if(slots >= 3) {
 				slots -= 3;
+				direction = vehicle.getDirection();
 				return true;
 			}else {
 				return false;
 			}
 		}else if(vehicle instanceof Car) {
-			return false;
+			//TODO: Can enums be compared with ==?
+			if(slots >= 3) {
+				slots --;
+				direction = vehicle.getDirection();
+				return true;
+			}else if(0 < slots && vehicle.getDirection().equals(direction)) {
+				slots--;
+				return true;
+			}else {
+				return false;
+			}
 		}else {
 			//TODO: Add some stuff here
 			return false;
@@ -33,7 +44,12 @@ public class BasicTunnel extends Tunnel{
 
 	@Override
 	public synchronized void exitTunnelInner(Vehicle vehicle) {
-		
+		//TODO: What if a nonexistent vehicle tries to exit?
+		if(vehicle instanceof Sled) {
+			slots += 3;
+		}else if(vehicle instanceof Car) {
+			slots++;
+		}
 	}
 	
 }
